@@ -1,6 +1,6 @@
 # raspberry-pi-assistant
 
-The Raspberri Pi assistant is and Internet of Things assistant utilizing a pi and the Google Cloud Platform
+Reginald is a Raspberri Pi assistant utilizing a pi and the Google Cloud Platform
 
 Using a USB microphone the assistance is able to gather vocie recordings from around the raspberry pi
 
