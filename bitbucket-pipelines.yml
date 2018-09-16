@@ -1,4 +1,4 @@
-image: node:10.10.0
+image: atlassian/default-image:2
 
 pipelines:
   default:
@@ -12,7 +12,7 @@ pipelines:
         trigger: manual
         script:
           - echo "Building React"
-          - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/reginald/web-interface/; npm run build'
+          - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/reginald/web-interface/; yarn build'
     - step:
         name: Restart Server
         trigger: manual
