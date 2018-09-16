@@ -1,0 +1,6 @@
+image: ubuntu:10.04
+
+pipelines:
+    default:
+        -step:
+            - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/ && ls -la && echo "im on the server"'
