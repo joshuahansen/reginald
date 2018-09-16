@@ -12,7 +12,7 @@ pipelines:
         trigger: manual
         script:
           - echo "Building React"
-          - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/reginald/web-interface/ && nvm install node && npm install && yarn build'
+          - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/reginald/web-interface/ && yarn build'
     - step:
         name: Restart Server
         trigger: manual
