@@ -6,8 +6,7 @@ pipelines:
        name: Deploy
        script:
         - echo "SSH to AWS"
-
-        - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/ && ls -la && echo "im on the server"'
+        - scp -r * ubuntu@54.210.104.203:/home/ubuntu/reginald/
     - step:
         name: Build React
         trigger: manual
