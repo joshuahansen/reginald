@@ -6,16 +6,25 @@ pipelines:
        name: Deploy
        script:
         - echo "SSH to AWS"
+        - eval 'ssh-agent -s'
+        - ssh-add ~/.ssh/id_rsa
+        - ssh-add -l
         - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/ && ls -la && echo "im on the server"'
     - step:
         name: Build React
         trigger: manual
         script:
           - echo "Building React"
+          - eval 'ssh-agent -s'
+          - ssh-add ~/.ssh/id_rsa
+          - ssh-add -l
           - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/reginald && yarn build'
     - step:
         name: Restart Server
         trigger: manual
         script:
           - echo "Restarting Nginx"
+          - eval 'ssh-agent -s'
+          - ssh-add ~/.ssh/id_rsa
+          - ssh-add -l
           - ssh ubuntu@54.210.104.203 'sudo systemctl restart nginx'
