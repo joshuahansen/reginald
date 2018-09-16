@@ -1,4 +1,4 @@
-image: ubuntu:16.04
+image: atlassian/default-image:2
 
 pipelines:
   default:
