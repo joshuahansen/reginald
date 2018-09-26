@@ -7,10 +7,7 @@ pipelines:
        name: Deploy
        script:
         - echo "SSH to AWS"
-        - eval 'ssh-agent -s'
-        - ssh-add ~/.ssh/id_rsa
-        - ssh-add -l
-        - scp -r * ubuntu@35.174.231.192:/home/ubuntu/reginald/
+        - scp -o StrictHostKeyChecking=no -r * ubuntu@35.174.231.192:/home/ubuntu/reginald/
     - step:
         name: Build React
         trigger: manual
