@@ -1,6 +1,22 @@
-image: ubuntu:10.04
+image: atlassian/default-image:2
 
 pipelines:
-    default:
-        -step:
-            - ssh ubuntu@54.210.104.203 'cd /home/ubuntu/ && ls -la && echo "im on the server"'
+  branches:
+    master:
+    - step:
+       name: Deploy
+       script:
+        - echo "SSH to AWS"
+        - scp -o StrictHostKeyChecking=no -r * ubuntu@35.174.231.192:/home/ubuntu/reginald/
+    - step:
+        name: Build React
+        trigger: manual
+        script:
+          - echo "Building React"
+          - ssh ubuntu@35.174.231.192 'cd /home/ubuntu/reginald/web-interface/; yarn build'
+    - step:
+        name: Restart Server
+        trigger: manual
+        script:
+          - echo "Restarting Nginx"
+          - ssh ubuntu@35.174.231.192 'sudo systemctl restart nginx'
