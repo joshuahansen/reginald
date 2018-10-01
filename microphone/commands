@@ -1,5 +1,0 @@
-#record for 3 seconds into test.wav:
-arecord -D plughw:1,0 -d 3 test.wav
-
-#play recording test.wav:
-aplay test.wav
