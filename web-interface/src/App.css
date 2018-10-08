@@ -26,3 +26,33 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.drawer {
+  width: 250px;
+}
+.menuItem {
+
+}
+
+.recognition {
+  margin-top: 10px;
+  margin-left: 100px;
+  display: flex;
+  flex-direction: row;
+
+}
+
+.recognition-form {
+  display: flex;
+  flex-direction: row;
+}
+
+.register-h1 {
+  margin-left: 100px;
+  margin-top: 50px;
+}
+
+.recognition-button {
+  margin-left: 20px;
+  margin-top: 15px;
+}
