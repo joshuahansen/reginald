@@ -61,7 +61,6 @@ var record = function() {
    });
    recording.on('close', function(code) {
      inputStream.done();
-     console.log("REMOVING FILE")
      exec(REMOVE_REQUEST_FILE);
    });
  }
