@@ -69,7 +69,7 @@ class App extends Component {
                 >
 
                   <div>
-                    <MenuItem>Register Face</MenuItem>
+                    <MenuItem>Menu Item 1</MenuItem>
                     <MenuItem>Menu Item 2</MenuItem>
                     <MenuItem>Menu Item 3</MenuItem>
                     <MenuItem>Menu Item 4</MenuItem>
@@ -83,9 +83,9 @@ class App extends Component {
           </AppBar>
 
           <div className="container">
-          <h1 className="register-h1">
+          <h2 className="register-h1">
             Register New Face
-          </h1>
+          </h2>
 
           <div className="recognition">
             <form className="recognition-form" onSubmit={this.handleSubmit}>
@@ -102,6 +102,10 @@ class App extends Component {
             </form>
           </div>
 
+          <h2 className="register-h1">
+            Amazon Lex History
+          </h2>
+
           <div className="databaseTable">
 
             <Paper>
@@ -117,12 +121,8 @@ class App extends Component {
                 <TableBody>
 
                 <TableRow>
-                  <TableCell component="th" scope="row">1</TableCell>
-                  <TableCell>Get weather for Melbourne</TableCell>
-                  <TableCell>What is the weather for melbourne?</TableCell>
-                  <TableCell>It is currently 26 Degrees Celcius</TableCell>
 
-              </TableRow>
+                </TableRow>
 
                 </TableBody>
               </Table>
