@@ -10,6 +10,13 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
 
 const theme = createMuiTheme ({
     palette: {
@@ -38,6 +45,7 @@ class App extends Component {
   handleSubmit() {
 
     console.log("Test");
+    //
 
   }
 
@@ -74,6 +82,7 @@ class App extends Component {
             </Toolbar>
           </AppBar>
 
+          <div className="container">
           <h1 className="register-h1">
             Register New Face
           </h1>
@@ -93,6 +102,34 @@ class App extends Component {
             </form>
           </div>
 
+          <div className="databaseTable">
+
+            <Paper>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>ID</TableCell>
+                    <TableCell>Intent</TableCell>
+                    <TableCell>Transcript</TableCell>
+                    <TableCell>Response</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+
+                <TableRow>
+                  <TableCell component="th" scope="row">1</TableCell>
+                  <TableCell>Get weather for Melbourne</TableCell>
+                  <TableCell>What is the weather for melbourne?</TableCell>
+                  <TableCell>It is currently 26 Degrees Celcius</TableCell>
+
+              </TableRow>
+
+                </TableBody>
+              </Table>
+            </Paper>
+
+          </div>
+          </div>
         </div>
       </MuiThemeProvider>
     );
