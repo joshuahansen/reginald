@@ -5,11 +5,18 @@ from botocore.vendored import requests
 def lambda_handler(event, context):
     try:
         city = event['currentIntent']['slots']['City']
-        response = requests.get("http://www.bom.gov.au/fwo/IDV60901/IDV60901.95936.json")
-            
+        user_api = 'df38ba0c99310b2d5670d0bf46f4ac69'
+        unit = 'metric'
+        api = 'http://api.openweathermap.org/data/2.5/weather'
+        country_code = 'au'
+
+        full_api_url = "{}?q={},{}&mode=json&units={}&APPID={}".format(api,city,country_code,unit,user_api)
+
+        response = requests.get(full_api_url)
+
         if response.status_code == 200:
             data = response.json()
-            temp = data['observations']['data'][0]['air_temp']
+            temp = data['main']['temp']
             res = "The weather in {} is {} degrees".format(city,temp)
             action = {
                 "type": "Close",
@@ -17,8 +24,8 @@ def lambda_handler(event, context):
                 "message": {
                     "contentType": "PlainText",
                     "content": res
-                    }
                 }
+            }
         else:
             raise Exception()
 
@@ -28,10 +35,10 @@ def lambda_handler(event, context):
             "fulfillmentState": "Failed",
             "message": {
                 "contentType": "PlainText",
-                "content": "Sorry I could not get the weather at this time please try again later "
+                "content": "SorRy I could not get the weather at this time please try again later "
             }
         }
     finally:
         return {
             "dialogAction": action
-        }     
+        }   
