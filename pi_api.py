@@ -11,6 +11,9 @@ def create_app():
     app = Flask(__name__)
     sense = SenseHat()
 
+    run_recognize = False
+    thread_lock = threading.Lock()
+
     def calibrate_temp(sense_temp):
         cpu_temp = get_cpu_temp()
         return round(sense_temp - ((cpu_temp - sense_temp)/1.5), 2)
@@ -94,8 +97,8 @@ def create_app():
         finally:
             return response
     
-    @app.route('/recognise', methods=['GET'])
-    def recofnise():
+    @app.route('/recognize', methods=['GET'])
+    def recognize():
         '''Start facial recognition'''
         try:
             # Start facial recognision
@@ -108,6 +111,26 @@ def create_app():
             return response
 
     return app
+
+    @app.route('/stop-recognize', methods=['GET'])
+    def stop_recognize():
+        '''Stop facial recognition'''
+        try:
+            global run_recognize
+            thread_lock.acquire()
+            run_recognize = False
+            thread_lock.release()
+
+            response = jsonify({"Status": "Successful", "Data": ""})
+            response.status_code = 200
+        except:
+            response = jsonify({"Status": "Failed", "Data": ""})
+            response.status_code = 400
+        finally:
+            return response
+
+
+
 
 
 if __name__ == '__main__':
