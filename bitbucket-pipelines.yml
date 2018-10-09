@@ -7,16 +7,16 @@ pipelines:
        name: Deploy
        script:
         - echo "SSH to AWS"
-        - scp -o StrictHostKeyChecking=no -r * ubuntu@35.174.231.192:/home/ubuntu/reginald/
+        - scp -o StrictHostKeyChecking=no -r * ubuntu@50.19.37.167:/home/ubuntu/reginald/
     - step:
         name: Build React
         trigger: manual
         script:
           - echo "Building React"
-          - ssh ubuntu@35.174.231.192 'cd /home/ubuntu/reginald/web-interface/; yarn build'
+          - ssh ubuntu@50.19.37.167'cd /home/ubuntu/reginald/web-interface/; yarn build'
     - step:
         name: Restart Server
         trigger: manual
         script:
           - echo "Restarting Nginx"
-          - ssh ubuntu@35.174.231.192 'sudo systemctl restart nginx'
+          - ssh ubuntu@50.19.37.167 'sudo systemctl restart nginx'
