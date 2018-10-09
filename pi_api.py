@@ -11,6 +11,9 @@ import time
 import cv2
 import requests
 
+import register
+import encode
+
 
 def create_app():
     """Create a falsk application to serve the website"""
@@ -81,6 +84,7 @@ def create_app():
         try:
             name = request.args.get('name')
             # Run add face
+            register.new(name)
             response = jsonify({"Status": "Successful", "Data": "{} photos where taken for facial recognition".format(name)})
             response.status_code = 200
         except:
@@ -94,8 +98,7 @@ def create_app():
         '''Train datasets for facial recognition'''
         try:
             # Train facial recognision
-            #thread = threading.Thread(target=train, daemon=True)
-            #thread.start()
+            encode.train()
             response = jsonify({"Status": "Successful", "Data": ""})
             response.status_code = 200
         except:
