@@ -3,6 +3,13 @@ import os
 import threading
 from flask import Flask, request, render_template, jsonify
 from sense_hat import SenseHat
+from imutils.video import VideoStream
+import face_recognition
+import imutils
+import pickle
+import time
+import cv2
+import requests
 
 
 def create_app():
@@ -102,6 +109,8 @@ def create_app():
         '''Start facial recognition'''
         try:
             # Start facial recognision
+            thread = threading.Thread(target=facial_recognition, daemon=True)
+            thread.start()
             response = jsonify({"Status": "Successful", "Data": ""})
             response.status_code = 200
         except:
@@ -109,8 +118,6 @@ def create_app():
             response.status_code = 400
         finally:
             return response
-
-    return app
 
     @app.route('/stop-recognize', methods=['GET'])
     def stop_recognize():
@@ -129,8 +136,75 @@ def create_app():
         finally:
             return response
 
+    def facial_recognition():
+        '''Run facial recognition '''
+        print("[INFO] loading encodings...")
+        data = pickle.loads(open('encodings.pickle', "rb").read())
 
+        print("[INFO] starting video stream...")
+        vs = VideoStream(src=0).start()
+        writer = None
+        time.sleep(1.0)
 
+        run = True
+        # loop over frames from the video file stream
+        while run:
+            frame = vs.read()
+
+            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            rgb = imutils.resize(frame, width=240)
+            r = frame.shape[1] / float(rgb.shape[1])
+
+            boxes = face_recognition.face_locations(rgb, model='hog')
+            encodings = face_recognition.face_encodings(rgb, boxes)
+            names = []
+
+            # loop over the facial embeddings
+            for encoding in encodings:
+                matches = face_recognition.compare_faces(data["encodings"], 
+                        encoding)
+                name = "Unknown"
+
+                if True in matches:
+                    matchedIdxs = [i for (i, b) in enumerate(matches) if b]
+                    counts = {}
+
+                    for i in matchedIdxs:
+                        name = data["names"][i]
+                        counts[name] = counts.get(name, 0) + 1
+
+                name = max(counts, key=counts.get)
+
+                # update the list of names
+                names.append(name)
+            
+            # loop over the recognized faces
+            for ((top, right, bottom, left), name) in zip(boxes, names):
+                top = int(top * r)
+                right = int(right * r)
+                bottom = int(bottom * r)
+                left = int(left * r)
+
+                print('Person found: {}'.format(name))
+                
+                # print to sense hat LED matrix
+                sense.show_message(name)
+                # Set a flag to sleep the cam for fixed time
+                time.sleep(1.5)
+
+            # check if facial recognition as been stopped
+            global run_recognize
+            thread_lock.aquire()
+            if not run_recognize:
+                run = False
+            thread_lock.release()
+        
+        # do a bit of cleanup
+        cv2.destroyAllWindows()
+        vs.stop()
+        print("Facial Recognition Stopped")
+                
+    return app
 
 
 if __name__ == '__main__':
