@@ -13,7 +13,7 @@ pipelines:
         trigger: manual
         script:
           - echo "Building React"
-          - ssh ubuntu@50.19.37.167'cd /home/ubuntu/reginald/web-interface/; yarn build'
+          - ssh ubuntu@50.19.37.167 'cd /home/ubuntu/reginald/web-interface/; yarn build'
     - step:
         name: Restart Server
         trigger: manual
