@@ -35,6 +35,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieve = this.retrieve.bind(this);
     this.handleEncode =this.handleEncode.bind(this);
+    this.handleInput = this.handleInput.bind(this);
     this.state = {
       rows: null,
       open: false,
@@ -168,6 +169,42 @@ class App extends Component {
 
   };
 
+  handleInput() {
+
+
+    console.log("Input Test");
+    var AWS = require('aws-sdk');
+
+    AWS.config.update({
+      accessKeyId: "AKIAJJOUN2ESGFUQNI5A",
+      secretAccessKey: "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",
+      region: "us-east-1",
+      endpoint: "runtime.lex.us-east-1.amazonaws.com"
+    });
+
+    var input = document.getElementById('lexInput').value;
+    console.log(input);
+
+    var lex = new AWS.LexRuntime();
+
+    var params = {
+      botAlias: 'demo', /* required */
+      botName: 'Reginald', /* required */
+      inputText: input, /* required */
+      userId: 'Interface', /* required */
+    };
+
+    lex.postText(params, function(err, data) {
+      if (err) {
+        console.log(err, err.stack);
+      } else {
+        console.log(data);
+      }
+
+    });
+
+  }
+
   retrieve() {
 
     var AWS = require('aws-sdk');
@@ -289,6 +326,28 @@ class App extends Component {
               </div>
 
             </div>
+
+            <div className="enable">
+
+              <h2 className="register-h1">
+                Query Lex
+              </h2>
+
+              <div className="recognition-form inForm">
+                 <TextField
+                    id="lexInput"
+                    label="Query"
+                    margin="dense"
+                    />
+                 <div className="recognition-button">
+                    <Button onClick={this.handleInput.bind(this)}variant="contained" color="primary">
+                    Send
+                    </Button>
+                 </div>
+              </div>
+
+            </div>
+
          </div>
          <h2 className="register-h1">
             Amazon Lex History
