@@ -33,7 +33,8 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.retrieve = this.retrieve.bind(this);
   }
 
   toggleDrawer = (side, open) => () => {
@@ -45,10 +46,38 @@ class App extends Component {
   handleSubmit() {
 
     console.log("Test");
-    //
 
   }
 
+  retrieve() {
+
+    var AWS = require('aws-sdk');
+
+    AWS.config.update({
+      accessKeyId: "AKIAJJOUN2ESGFUQNI5A",
+      secretAccessKey: "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",
+      region: "us-east-1",
+      endpoint: "https://dynamodb.us-east-1.amazonaws.com"
+    });
+
+    var docClient = new AWS.DynamoDB.DocumentClient();
+    var table = "LexHistory";
+
+    console.log("Scanning LexHistory table.");
+
+    docClient.scan({ TableName: table }, function(err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Success");
+        }
+    })
+
+  }
+
+  componentWillMount(){
+    this.retrieve();
+  }
 
   render() {
 
@@ -88,7 +117,7 @@ class App extends Component {
           </h2>
 
           <div className="recognition">
-            <form className="recognition-form" onSubmit={this.handleSubmit}>
+            <form className="recognition-form" onSubmit={this.handleSubmit.bind(this)}>
               <TextField
                 id="standard-dense"
                 label="Name"
