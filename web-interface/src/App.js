@@ -34,6 +34,7 @@ class App extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieve = this.retrieve.bind(this);
+    this.handleEncode =this.handleEncode.bind(this);
     this.state = {
       rows: null,
       open: false,
@@ -50,9 +51,122 @@ class App extends Component {
 
   handleSubmit() {
 
-    console.log("Test");
+    console.log("test3")
+    var name = document.getElementById('formName').value;
+    var url = "http://123.243.247.182:5000/register?name=";
+    var fullURL = url.concat(name);
+    var request = new XMLHttpRequest();
+    request.open('GET', fullURL, true);
 
-  }
+    request.onload = function () {
+
+      console.log("test2")
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log("test1")
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
+  };
+
+  handleEncode() {
+
+    console.log("Encode");
+
+    var url = "http://123.243.247.182:5000/train";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+    this.setState({ open: false });
+  };
+
+  handleStartRec() {
+
+    console.log("Start");
+
+    var url = "http://123.243.247.182:5000/recognize";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
+  };
+
+  handleStopRec() {
+
+    console.log("Stop");
+
+    var url = "http://123.243.247.182:5000/stop-recognize";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
+  };
 
   retrieve() {
 
@@ -87,9 +201,7 @@ class App extends Component {
 
     this.setState({rows: rows});
 
-
   }
-
 
   componentWillMount(){
     this.retrieve();
@@ -116,7 +228,7 @@ class App extends Component {
                <div className="recognition">
                   <form className="recognition-form" onSubmit={this.handleSubmit.bind(this)}>
                      <TextField
-                        id="standard-dense"
+                        id="formName"
                         label="Name"
                         margin="dense"
                         />
@@ -148,7 +260,7 @@ class App extends Component {
                         <Button onClick={this.handleClose} color="primary">
                         Disagree
                         </Button>
-                        <Button type="submit" variant="contained" color="primary" autoFocus>
+                        <Button onClick={this.handleEncode} variant="contained" color="primary" autoFocus>
                         Agree
                         </Button>
                      </DialogActions>
@@ -162,7 +274,17 @@ class App extends Component {
               </h2>
 
               <div className="enable-inner">
+                <div className="recognition-button">
+                   <Button onClick={this.handleStartRec} variant="contained" color="primary">
+                    START
+                   </Button>
+                </div>
 
+                <div className="recognition-button">
+                   <Button onClick={this.handleStopRec} variant="contained" color="primary">
+                    STOP
+                   </Button>
+                </div>
 
               </div>
 

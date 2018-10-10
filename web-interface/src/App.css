@@ -60,12 +60,14 @@ enable-inner {
 
 }
 
-.enable {
-
+.enable-inner {
+  display: flex;
+  flex-direction: row;
+  margin-left: 85px;
 }
 
 .databaseTable {
-  max-width: 1500px;
+  max-width: 1300px;
   margin-top: 50px;
   margin-left: 100px;
 }
