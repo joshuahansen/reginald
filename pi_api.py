@@ -11,18 +11,18 @@ import time
 import cv2
 import requests
 
-import register
-import encode
+import face_detection.register as register
+import face_detection.encode as encode
+import face_detection.polly as polly
 
+run_recognize = False
+thread_lock = threading.Lock()
 
 def create_app():
     """Create a falsk application to serve the website"""
 
     app = Flask(__name__)
     sense = SenseHat()
-
-    run_recognize = False
-    thread_lock = threading.Lock()
 
     def calibrate_temp(sense_temp):
         cpu_temp = get_cpu_temp()
@@ -81,17 +81,17 @@ def create_app():
     @app.route('/register', methods=['GET'])
     def register():
         '''Register face for facial recognition'''
-        try:
-            name = request.args.get('name')
-            # Run add face
-            register.new(name)
-            response = jsonify({"Status": "Successful", "Data": "{} photos where taken for facial recognition".format(name)})
-            response.status_code = 200
-        except:
-            response = jsonify({"Status": "Failed", "Data": ""})
-            response.status_code = 400
-        finally:
-            return response
+       # try:
+        name = request.args.get('name')
+        # Run add face
+        register.new_user(name)
+        response = jsonify({"Status": "Successful", "Data": "{} photos where taken for facial recognition".format(name)})
+        response.status_code = 200
+       # except:
+       #     response = jsonify({"Status": "Failed", "Data": ""})
+       #     response.status_code = 400
+       # finally:
+        return response
 
     @app.route('/train', methods=['GET'])
     def train():
@@ -125,8 +125,8 @@ def create_app():
     @app.route('/stop-recognize', methods=['GET'])
     def stop_recognize():
         '''Stop facial recognition'''
+        global run_recognize
         try:
-            global run_recognize
             thread_lock.acquire()
             run_recognize = False
             thread_lock.release()
@@ -141,9 +141,15 @@ def create_app():
 
     def facial_recognition():
         '''Run facial recognition '''
+        global run_recognize
         print("[INFO] loading encodings...")
-        data = pickle.loads(open('encodings.pickle', "rb").read())
+        data = pickle.loads(open('face_detection/encodings.pickle', "rb").read())
 
+        # check if facial recognition as been stopped
+        thread_lock.acquire()
+        run_recognize = True
+        thread_lock.release()
+        
         print("[INFO] starting video stream...")
         vs = VideoStream(src=0).start()
         writer = None
@@ -191,13 +197,14 @@ def create_app():
                 print('Person found: {}'.format(name))
                 
                 # print to sense hat LED matrix
-                sense.show_message(name)
+                #sense.show_message(name)
+                polly.speech_synthesize(name)
+                os.system("mpg123 face_detection/polly-response.mp3")
                 # Set a flag to sleep the cam for fixed time
                 time.sleep(1.5)
 
             # check if facial recognition as been stopped
-            global run_recognize
-            thread_lock.aquire()
+            thread_lock.acquire()
             if not run_recognize:
                 run = False
             thread_lock.release()

@@ -37,7 +37,7 @@ def faceLED():
     sense.set_pixels(face)
 
 
-def register(name):
+def new_user(name):
     # use name as folder name
     folder = './dataset/{}'.format(name)
 
@@ -46,7 +46,7 @@ def register(name):
         os.makedirs(folder)
 
     # Load face, eyes and smile cascades
-    faceCascade = cv2.CascadeClassifier('data/haarcascades/haarcascade_frontalface_default.xml')
+    faceCascade = cv2.CascadeClassifier('face_detection/data/haarcascades/haarcascade_frontalface_default.xml')
 
     cap = cv2.VideoCapture(0)
     cap.set(3,640) # set Width

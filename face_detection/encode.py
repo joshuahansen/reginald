@@ -56,6 +56,6 @@ def train():
     # dump the facial encodings + names to disk
     print("[INFO] serializing encodings...")
     data = {"encodings": knownEncodings, "names": knownNames}
-    f = open'encodings.pickle', "wb")
+    f = open('encodings.pickle', "wb")
     f.write(pickle.dumps(data))
     f.close()
