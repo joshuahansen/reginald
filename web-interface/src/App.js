@@ -52,7 +52,6 @@ class App extends Component {
 
   handleSubmit() {
 
-    console.log("test3")
     var name = document.getElementById('formName').value;
     var url = "http://123.243.247.182:5000/register?name=";
     var fullURL = url.concat(name);
@@ -61,14 +60,12 @@ class App extends Component {
 
     request.onload = function () {
 
-      console.log("test2")
       var data = JSON.parse(this.response);
 
       if (request.status === 200) {
 
         data.forEach(d => {
 
-          console.log("test1")
           console.log(d);
 
         });
@@ -84,7 +81,7 @@ class App extends Component {
 
   handleEncode() {
 
-    console.log("Encode");
+    console.log("Encoding...");
 
     var url = "http://123.243.247.182:5000/train";
     var request = new XMLHttpRequest();
@@ -113,7 +110,7 @@ class App extends Component {
 
   handleStartRec() {
 
-    console.log("Start");
+    console.log("Starting Recognition...");
 
     var url = "http://123.243.247.182:5000/recognize";
     var request = new XMLHttpRequest();
@@ -142,7 +139,7 @@ class App extends Component {
 
   handleStopRec() {
 
-    console.log("Stop");
+    console.log("Stopping Recognition...");
 
     var url = "http://123.243.247.182:5000/stop-recognize";
     var request = new XMLHttpRequest();
@@ -172,7 +169,7 @@ class App extends Component {
   handleInput() {
 
 
-    console.log("Input Test");
+    console.log("Sending Input...");
     var AWS = require('aws-sdk');
 
     AWS.config.update({
@@ -183,7 +180,6 @@ class App extends Component {
     });
 
     var input = document.getElementById('lexInput').value;
-    console.log(input);
 
     var lex = new AWS.LexRuntime();
 
