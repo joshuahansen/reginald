@@ -35,6 +35,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieve = this.retrieve.bind(this);
     this.handleEncode =this.handleEncode.bind(this);
+    this.handleInput = this.handleInput.bind(this);
     this.state = {
       rows: null,
       open: false,
@@ -51,7 +52,6 @@ class App extends Component {
 
   handleSubmit() {
 
-    console.log("test3")
     var name = document.getElementById('formName').value;
     var url = "http://123.243.247.182:5000/register?name=";
     var fullURL = url.concat(name);
@@ -60,14 +60,12 @@ class App extends Component {
 
     request.onload = function () {
 
-      console.log("test2")
       var data = JSON.parse(this.response);
 
       if (request.status === 200) {
 
         data.forEach(d => {
 
-          console.log("test1")
           console.log(d);
 
         });
@@ -83,7 +81,7 @@ class App extends Component {
 
   handleEncode() {
 
-    console.log("Encode");
+    console.log("Encoding...");
 
     var url = "http://123.243.247.182:5000/train";
     var request = new XMLHttpRequest();
@@ -112,7 +110,7 @@ class App extends Component {
 
   handleStartRec() {
 
-    console.log("Start");
+    console.log("Starting Recognition...");
 
     var url = "http://123.243.247.182:5000/recognize";
     var request = new XMLHttpRequest();
@@ -141,7 +139,7 @@ class App extends Component {
 
   handleStopRec() {
 
-    console.log("Stop");
+    console.log("Stopping Recognition...");
 
     var url = "http://123.243.247.182:5000/stop-recognize";
     var request = new XMLHttpRequest();
@@ -167,6 +165,41 @@ class App extends Component {
     request.send();
 
   };
+
+  handleInput() {
+
+
+    console.log("Sending Input...");
+    var AWS = require('aws-sdk');
+
+    AWS.config.update({
+      accessKeyId: "AKIAJJOUN2ESGFUQNI5A",
+      secretAccessKey: "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",
+      region: "us-east-1",
+      endpoint: "runtime.lex.us-east-1.amazonaws.com"
+    });
+
+    var input = document.getElementById('lexInput').value;
+
+    var lex = new AWS.LexRuntime();
+
+    var params = {
+      botAlias: 'demo', /* required */
+      botName: 'Reginald', /* required */
+      inputText: input, /* required */
+      userId: 'Interface', /* required */
+    };
+
+    lex.postText(params, function(err, data) {
+      if (err) {
+        console.log(err, err.stack);
+      } else {
+        console.log(data);
+      }
+
+    });
+
+  }
 
   retrieve() {
 
@@ -289,6 +322,28 @@ class App extends Component {
               </div>
 
             </div>
+
+            <div className="enable">
+
+              <h2 className="register-h1">
+                Query Reginald
+              </h2>
+
+              <div className="recognition-form inForm">
+                 <TextField
+                    id="lexInput"
+                    label="Query"
+                    margin="dense"
+                    />
+                 <div className="recognition-button">
+                    <Button onClick={this.handleInput.bind(this)}variant="contained" color="primary">
+                    Send
+                    </Button>
+                 </div>
+              </div>
+
+            </div>
+
          </div>
          <h2 className="register-h1">
             Amazon Lex History

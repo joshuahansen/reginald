@@ -56,8 +56,8 @@ enable-inner {
   flex-direction: row;
 }
 
-.reg {
-
+.inForm {
+  margin-left: 100px;
 }
 
 .enable-inner {
