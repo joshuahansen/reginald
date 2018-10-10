@@ -326,7 +326,7 @@ class App extends Component {
             <div className="enable">
 
               <h2 className="register-h1">
-                Query Lex
+                Query Reginald
               </h2>
 
               <div className="recognition-form inForm">
