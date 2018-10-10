@@ -1,8 +1,3 @@
-# USAGE
-# With default parameters
-# 		python3 encode.py
-# OR specifying the dataset, encodings and detection method
-# 		python3 encode.py -i dataset -e encodings.pickle -d cnn
 ## Acknowledgement
 ## This code is adapted from:
 ## https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
@@ -20,7 +15,7 @@ import os
 def train():
     # grab the paths to the input images in our dataset
     print("[INFO] quantifying faces...")
-    imagePaths = list(paths.list_images('dataset'))
+    imagePaths = list(paths.list_images('face_detection/dataset'))
 
     # initialize the list of known encodings and known names
     knownEncodings = []
@@ -56,6 +51,6 @@ def train():
     # dump the facial encodings + names to disk
     print("[INFO] serializing encodings...")
     data = {"encodings": knownEncodings, "names": knownNames}
-    f = open('encodings.pickle', "wb")
+    f = open('face_detection/encodings.pickle', "wb")
     f.write(pickle.dumps(data))
     f.close()

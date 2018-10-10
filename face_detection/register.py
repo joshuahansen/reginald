@@ -1,7 +1,3 @@
-# USAGE
-# Specify the name of the person
-#     python3 faceDetection.py -n Josh
-
 ## Acknowledgement
 ## This code is adapted from:
 ## https://www.pyimagesearch.com/2018/06/18/face-recognition-with-opencv-python-and-deep-learning/
@@ -12,6 +8,7 @@ Requires user to have 10 normal pictures and 10 smiling pictures
 import numpy as np
 import cv2
 import os
+import time
 from sense_hat import SenseHat
 
 sense = SenseHat()
@@ -39,7 +36,7 @@ def faceLED():
 
 def new_user(name):
     # use name as folder name
-    folder = './dataset/{}'.format(name)
+    folder = './face_detection/dataset/{}'.format(name)
 
     # Create a new folder for the new name
     if not os.path.exists(folder):
@@ -84,7 +81,10 @@ def new_user(name):
             cv2.imwrite(img_name, img[y:y+h,x:x+w])
             print("{} face written!".format(img_name))
             img_counter += 1
+
+        time.sleep(0.5)
             
 
+    sense.clear((0,0,0))
     cap.release()
     cv2.destroyAllWindows()

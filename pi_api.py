@@ -11,8 +11,8 @@ import time
 import cv2
 import requests
 
-import face_detection.register as register
-import face_detection.encode as encode
+import face_detection.register as register_face
+import face_detection.encode as encode_face
 import face_detection.polly as polly
 
 run_recognize = False
@@ -84,7 +84,7 @@ def create_app():
        # try:
         name = request.args.get('name')
         # Run add face
-        register.new_user(name)
+        register_face.new_user(name)
         response = jsonify({"Status": "Successful", "Data": "{} photos where taken for facial recognition".format(name)})
         response.status_code = 200
        # except:
@@ -98,7 +98,7 @@ def create_app():
         '''Train datasets for facial recognition'''
         try:
             # Train facial recognision
-            encode.train()
+            encode_face.train()
             response = jsonify({"Status": "Successful", "Data": ""})
             response.status_code = 200
         except:

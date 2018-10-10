@@ -36,7 +36,7 @@ def speech_synthesize(name):
     
     if "AudioStream" in response:
         with closing(response["AudioStream"]) as stream:
-            output = "polly-response.mp3"
+            output = "face_detection/polly-response.mp3"
 
             try:
                 # Open a file for writing the output as a binary stream
