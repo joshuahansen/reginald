@@ -60,8 +60,10 @@ enable-inner {
 
 }
 
-.enable {
-
+.enable-inner {
+  display: flex;
+  flex-direction: row;
+  margin-left: 85px;
 }
 
 .databaseTable {

@@ -34,6 +34,7 @@ class App extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.retrieve = this.retrieve.bind(this);
+    this.handleEncode =this.handleEncode.bind(this);
     this.state = {
       rows: null,
       open: false,
@@ -60,7 +61,7 @@ class App extends Component {
 
       var data = JSON.parse(this.response);
 
-      if (request.status = 200) {
+      if (request.status === 200) {
 
         data.forEach(d => {
 
@@ -78,7 +79,90 @@ class App extends Component {
   };
 
   handleEncode() {
+
     console.log("Encode");
+
+    var url = "http://10.132.53.147:5000/train";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+    this.setState({ open: false });
+  };
+
+  handleStartRec() {
+
+    console.log("Start");
+
+    var url = "http://10.132.53.147:5000/recognize";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
+  };
+
+  handleStopRec() {
+
+    console.log("Stop");
+
+    var url = "http://10.132.53.147:5000/stop-recognize";
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status === 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
   };
 
   retrieve() {
@@ -187,7 +271,17 @@ class App extends Component {
               </h2>
 
               <div className="enable-inner">
+                <div className="recognition-button">
+                   <Button onClick={this.handleStartRec} variant="contained" color="primary">
+                    START
+                   </Button>
+                </div>
 
+                <div className="recognition-button">
+                   <Button onClick={this.handleStopRec} variant="contained" color="primary">
+                    STOP
+                   </Button>
+                </div>
 
               </div>
 
