@@ -42,6 +42,28 @@
 
 }
 
+enable-inner {
+
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.facerec-flex {
+  display: flex;
+  flex-direction: row;
+}
+
+.reg {
+
+}
+
+.enable {
+
+}
+
 .databaseTable {
   max-width: 1500px;
   margin-top: 50px;
@@ -61,4 +83,9 @@
 .recognition-button {
   margin-left: 20px;
   margin-top: 15px;
+}
+
+.rms-title {
+  margin-left: 100px;
+  padding-left: 75px;
 }
