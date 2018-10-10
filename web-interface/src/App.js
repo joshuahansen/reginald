@@ -70,6 +70,38 @@ class App extends Component {
             console.log(err);
         } else {
             console.log("Success");
+            console.log(data);
+            data.Items.forEach(function(request) {
+              console.log(
+                request.UUID + ": ",
+                request.transcript, " - ", request.response
+              );
+
+              var id = request.UUID
+              var transcript = request.transcript
+              var intent = request.intent
+              var response = request.response
+
+              const tbd = document.getElementById('tbd');
+
+              const row = document.createElement('TableRow');
+
+              const idCell = document.createElement('TableCell');
+              idCell.textContent = id;
+              const tsCell = document.createElement('TableCell');
+              tsCell.textContent = transcript;
+              const inCell = document.createElement('TableCell');
+              inCell.textContent = intent;
+              const resCell = document.createElement('TableCell');
+              resCell.textContent = response;
+
+              tbd.appendChild(row);
+              row.appendChild(idCell);
+              row.appendChild(tsCell);
+              row.appendChild(inCell);
+              row.appendChild(resCell);
+
+            });
         }
     })
 
@@ -147,10 +179,13 @@ class App extends Component {
                     <TableCell>Response</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody id="tbd">
 
                 <TableRow>
-
+                  <TableCell component="th" scope="row">1</TableCell>
+                  <TableCell>Get weather for Melbourne</TableCell>
+                  <TableCell>What is the weather for melbourne?</TableCell>
+                  <TableCell>It is currently 26 Degrees Celcius</TableCell>
                 </TableRow>
 
                 </TableBody>
