@@ -51,20 +51,23 @@ class App extends Component {
 
   handleSubmit() {
 
+    console.log("test3")
     var name = document.getElementById('formName').value;
-    var url = "10.132.53.147:5000/register?name=";
+    var url = "http://123.243.247.182:5000/register?name=";
     var fullURL = url.concat(name);
     var request = new XMLHttpRequest();
     request.open('GET', fullURL, true);
 
     request.onload = function () {
 
+      console.log("test2")
       var data = JSON.parse(this.response);
 
       if (request.status === 200) {
 
         data.forEach(d => {
 
+          console.log("test1")
           console.log(d);
 
         });
@@ -82,7 +85,7 @@ class App extends Component {
 
     console.log("Encode");
 
-    var url = "http://10.132.53.147:5000/train";
+    var url = "http://123.243.247.182:5000/train";
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
 
@@ -111,7 +114,7 @@ class App extends Component {
 
     console.log("Start");
 
-    var url = "http://10.132.53.147:5000/recognize";
+    var url = "http://123.243.247.182:5000/recognize";
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
 
@@ -140,7 +143,7 @@ class App extends Component {
 
     console.log("Stop");
 
-    var url = "http://10.132.53.147:5000/stop-recognize";
+    var url = "http://123.243.247.182:5000/stop-recognize";
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
 
