@@ -50,9 +50,36 @@ class App extends Component {
 
   handleSubmit() {
 
-    console.log("Test");
+    var name = document.getElementById('formName').value;
+    var url = "10.132.53.147:5000/register?name=";
+    var fullURL = url.concat(name);
+    var request = new XMLHttpRequest();
+    request.open('GET', fullURL, true);
 
-  }
+    request.onload = function () {
+
+      var data = JSON.parse(this.response);
+
+      if (request.status = 200) {
+
+        data.forEach(d => {
+
+          console.log(d);
+
+        });
+
+      } else {
+        console.log('error');
+      }
+
+    }
+    request.send();
+
+  };
+
+  handleEncode() {
+    console.log("Encode");
+  };
 
   retrieve() {
 
@@ -87,9 +114,7 @@ class App extends Component {
 
     this.setState({rows: rows});
 
-
   }
-
 
   componentWillMount(){
     this.retrieve();
@@ -116,7 +141,7 @@ class App extends Component {
                <div className="recognition">
                   <form className="recognition-form" onSubmit={this.handleSubmit.bind(this)}>
                      <TextField
-                        id="standard-dense"
+                        id="formName"
                         label="Name"
                         margin="dense"
                         />
@@ -148,7 +173,7 @@ class App extends Component {
                         <Button onClick={this.handleClose} color="primary">
                         Disagree
                         </Button>
-                        <Button type="submit" variant="contained" color="primary" autoFocus>
+                        <Button onClick={this.handleEncode} variant="contained" color="primary" autoFocus>
                         Agree
                         </Button>
                      </DialogActions>
