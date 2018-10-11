@@ -39,6 +39,7 @@ class App extends Component {
     this.state = {
       rows: null,
       open: false,
+      responseString: ""
     };
   }
 
@@ -195,6 +196,8 @@ class App extends Component {
         console.log(err, err.stack);
       } else {
         console.log(data);
+        var responseString = data.message;
+        document.getElementById('lexOutput').textContent = responseString;
       }
 
     });
@@ -340,8 +343,12 @@ class App extends Component {
                     Send
                     </Button>
                  </div>
-              </div>
 
+              </div>
+              <div className="lexOutputDiv">
+                <h3>Last Response: </h3>
+                <p id="lexOutput"></p>
+              </div>
             </div>
 
          </div>
