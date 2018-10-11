@@ -7,7 +7,7 @@ var AWS = require('aws-sdk'),
    var FULFILLED = 'Fulfilled',
    RESPONSE_FILE = 'response.mpeg',
    REMOVE_REQUEST_FILE = 'rm request.wav',
-   SOX_COMMAND = 'sox -d -t wavpcm -c 1 -b 16 -r 16000 -e signed-integer --endian little - silence 1 0 1% 5 0.3t 2% > request.wav',
+   RECORD_COMMAND = 'arecord --device=hw:1,0 --format S16_LE --rate 44100 -d 3 -c1 recording.wav',
    streaming = false,
    inputStream,
    lexruntime = new AWS.LexRuntime({
@@ -52,7 +52,8 @@ var setupStream = function() {
  }
 
 var record = function() {
-   var recording = exec(SOX_COMMAND);
+   console.log('Listening...')
+   var recording = exec(RECORD_COMMAND);
    recording.stderr.on('data', function(data) {
      console.log(data);
      if (!streaming) {
