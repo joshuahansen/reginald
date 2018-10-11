@@ -6,26 +6,29 @@ import subprocess
 import pyaudio
 import boto3
 import os
+from sense_hat import SenseHat
+
+directory = 'lex-audio/recordings/'
 
 def make_recording():
-    """Call bash script to record to 'request.wav'."""
+    """Make a recording that stops once silence is detected."""
 
     print("Listening...")
-    subprocess.call("./record.sh")
+    os.system('sox -d -t wavpcm -c 1 -b 16 -r 16000 -e signed-integer --endian little - silence 1 0 1% 5 0.3t 2% > {}request.wav'.format(directory))
     print("Done.")
 
 def play_recording():
-    """Call bash script to play 'request.wav'."""
+    """Play 'request.wav'."""
 
-    print("Playing 'recording.wav'...")
-    subprocess.call("./play.sh")
+    print("Playing 'recording.mpg'...")
+    os.system("aplay {}request.wav".format(directory))
     print("Done.")
 
 def connect_to_lex():
     """Connect to Lex bot using AWS SDK."""
 
     config = configparser.ConfigParser()
-    config.read('../../config.ini')
+    config.read('config.ini')
 
     if 'AWS' in config:
         ACCESS_KEY = config['AWS']['access_key']
@@ -45,8 +48,11 @@ def connect_to_lex():
 def send_audio(reginald):
     """Send audio to Lex bot."""
 
+    # listern for recording
     make_recording()
-    play_recording()
+    
+    # debug recording playback
+    # play_recording() 
     
     print("Posting content to Reginald...")
     response = reginald.post_content(
@@ -54,15 +60,15 @@ def send_audio(reginald):
         botName='Reginald',
         userId='VoiceRecognition',
         contentType='audio/l16; rate=16000; channels=1',
-        inputStream=open('./request.wav', 'rb')
+        inputStream=open('{}request.wav'.format(directory), 'rb')
         )
     print("Done.")
 
     print("Playing response...")
     with closing(response["audioStream"]) as stream:
-        with open("response.mp3", "wb") as file:
+        with open("{}response.mp3".format(directory), "wb") as file:
                     file.write(stream.read())
-    os.system("mpg123 response.mp3")
+    os.system("mpg123 {}response.mp3".format(directory))
     print("Done.")
 
     print(response)
@@ -90,11 +96,19 @@ def send_text(reginald):
 def main():
     """Main function for module."""
 
+    sense = SenseHat()
     #Define reginald object.
     reginald = connect_to_lex()
+    
+    run = True
+    while run:
 
-    #Uncomment ONE:
-    send_audio(reginald)
-    #send_text(reginald)
+        for event in sense.stick.get_events():
+            if event.action == "pressed":
+                if event.direction == 'up':
+                    run = False
+                #Uncomment ONE:
+                send_audio(reginald)
+                #send_text(reginald)
 
 main()
