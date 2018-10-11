@@ -219,4 +219,4 @@ def create_app():
 
 if __name__ == '__main__':
     FLASK_APP = create_app()
-    FLASK_APP.run(host='0.0.0.0', debug=True)
+    FLASK_APP.run(host='0.0.0.0')
