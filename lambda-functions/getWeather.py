@@ -29,6 +29,7 @@ def lambda_handler(event, context):
                     "content": "<speak>{}</speak>".format(botResponse)
                     }
                 }
+            }
         else:
             raise Exception()
 
