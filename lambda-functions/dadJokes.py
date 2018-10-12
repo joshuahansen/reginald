@@ -4,23 +4,16 @@ import boto3
 import uuid
 
 
-
 def lambda_handler(event, context):
     try:
-        city = event['currentIntent']['slots']['City']
-        user_api = 'df38ba0c99310b2d5670d0bf46f4ac69'
-        unit = 'metric'
-        api = 'http://api.openweathermap.org/data/2.5/weather'
-        country_code = 'au'
-
-        full_api_url = "{}?q={},{}&mode=json&units={}&APPID={}".format(api,city,country_code,unit,user_api)
-        
-        response = requests.get(full_api_url)
+        headers = {
+            'Accept': 'application/json',
+        }
+        response = requests.get('https://icanhazdadjoke.com/', headers=headers)
             
         if response.status_code == 200:
             data = response.json()
-            temp = data['main']['temp']
-            botResponse = "The weather in {} is {} degrees".format(city,temp)
+            botResponse = data["joke"]
             action = {
                 "type": "Close",
                 "fulfillmentState": "Fulfilled",
@@ -33,7 +26,7 @@ def lambda_handler(event, context):
             raise Exception()
 
     except:
-        botResponse = "Sorry I could not get the weather at this time please try again later"
+        botResponse = "Sorry I could not think of a good joke at this time. Ask me again later"
         action = {
             "type": "Close",
             "fulfillmentState": "Fulfilled",
@@ -69,4 +62,4 @@ def lambda_handler(event, context):
         }
         return {
             "dialogAction": action
-        }   
+        }    

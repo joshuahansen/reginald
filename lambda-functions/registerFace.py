@@ -7,20 +7,15 @@ import uuid
 
 def lambda_handler(event, context):
     try:
-        city = event['currentIntent']['slots']['City']
-        user_api = 'df38ba0c99310b2d5670d0bf46f4ac69'
-        unit = 'metric'
-        api = 'http://api.openweathermap.org/data/2.5/weather'
-        country_code = 'au'
-
-        full_api_url = "{}?q={},{}&mode=json&units={}&APPID={}".format(api,city,country_code,unit,user_api)
+        name = event['currentIntent']['slots']['Name']
+            
+        pi_ip = '123.243.247.182:5000'
+        full_api_url = "http://{}/register?name={}".format(pi_ip, name)
         
-        response = requests.get(full_api_url)
+        response = requests.post(full_api_url, data=payload)
             
         if response.status_code == 200:
-            data = response.json()
-            temp = data['main']['temp']
-            botResponse = "The weather in {} is {} degrees".format(city,temp)
+            botResponse = "I have taken some images of {}. Let me know if you want want me to learn what you look like".format(name)
             action = {
                 "type": "Close",
                 "fulfillmentState": "Fulfilled",
@@ -33,7 +28,7 @@ def lambda_handler(event, context):
             raise Exception()
 
     except:
-        botResponse = "Sorry I could not get the weather at this time please try again later"
+        botResponse = "I can't seem to get any images of you please try again later"
         action = {
             "type": "Close",
             "fulfillmentState": "Fulfilled",

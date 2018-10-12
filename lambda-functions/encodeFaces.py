@@ -7,33 +7,39 @@ import uuid
 
 def lambda_handler(event, context):
     try:
-        city = event['currentIntent']['slots']['City']
-        user_api = 'df38ba0c99310b2d5670d0bf46f4ac69'
-        unit = 'metric'
-        api = 'http://api.openweathermap.org/data/2.5/weather'
-        country_code = 'au'
-
-        full_api_url = "{}?q={},{}&mode=json&units={}&APPID={}".format(api,city,country_code,unit,user_api)
+        confirm = event['currentIntent']['slots']['Confirm']
         
-        response = requests.get(full_api_url)
+        if confirm.lower() == 'yes':
+            pi_ip = '123.243.247.182:5000'
+            full_api_url = "http://{}/train".format(pi_ip)
             
-        if response.status_code == 200:
-            data = response.json()
-            temp = data['main']['temp']
-            botResponse = "The weather in {} is {} degrees".format(city,temp)
-            action = {
-                "type": "Close",
-                "fulfillmentState": "Fulfilled",
-                "message": {
-                    "contentType": "SSML",
-                    "content": "<speak>{}</speak>".format(botResponse)
+            response = requests.post(full_api_url, data=payload)
+                
+            if response.status_code == 200:
+                botResponse = "I have completed learning the new faces. Please start the facial recognition"
+                action = {
+                    "type": "Close",
+                    "fulfillmentState": "Fulfilled",
+                    "message": {
+                        "contentType": "SSML",
+                        "content": "<speak>{}</speak>".format(botResponse)
+                        }
                     }
-                }
+            else:
+                raise Exception()
         else:
-            raise Exception()
+             botResponse = "For my to recognise you I need to learn what you look like. Please remember to train me later"
+                action = {
+                    "type": "Close",
+                    "fulfillmentState": "Fulfilled",
+                    "message": {
+                        "contentType": "SSML",
+                        "content": "<speak>{}</speak>".format(botResponse)
+                        }
+                    }
 
     except:
-        botResponse = "Sorry I could not get the weather at this time please try again later"
+        botResponse = "Sorry I could not complete the training. Please try again"
         action = {
             "type": "Close",
             "fulfillmentState": "Fulfilled",
